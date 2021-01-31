@@ -1,4 +1,4 @@
-package main
+package proxmoxapi
 
 // Node hols info for a proxmox node
 type Node struct {
