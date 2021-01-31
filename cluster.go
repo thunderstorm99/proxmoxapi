@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+	"strconv"
+)
 
 func (p *ProxmoxConnection) getNodes() ([]node, error) {
 	// data struct for API call
@@ -18,4 +21,22 @@ func (p *ProxmoxConnection) getNodes() ([]node, error) {
 	nodes = append(nodes, d.Data...)
 
 	return nodes, nil
+}
+
+func (p *ProxmoxConnection) nextID() (int, error) {
+	var d struct {
+		Data string `json:"data"`
+	}
+
+	// call API
+	if err := p.callAPI("/cluster/nextid", http.MethodGet, &d); err != nil {
+		return 0, err
+	}
+
+	id, err := strconv.Atoi(d.Data)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
