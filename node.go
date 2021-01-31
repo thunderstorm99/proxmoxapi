@@ -4,10 +4,11 @@ import (
 	"net/http"
 )
 
-func (p *ProxmoxConnection) getVMs(node string) ([]vm, error) {
+// GetVMs gets all virtual machines, as well as containers for a given node
+func (p *ProxmoxConnection) GetVMs(node string) ([]VM, error) {
 	// data struct for API call
 	var d struct {
-		Data []vm `json:"data"`
+		Data []VM `json:"data"`
 	}
 
 	// call API
@@ -16,15 +17,16 @@ func (p *ProxmoxConnection) getVMs(node string) ([]vm, error) {
 	}
 
 	// transform into proper array
-	var vms []vm
+	var vms []VM
 	vms = append(vms, d.Data...)
 
 	return vms, nil
 }
 
-func (p *ProxmoxConnection) getVersion(node string) (version, error) {
+// GetVersion returns version info for a given node
+func (p *ProxmoxConnection) GetVersion(node string) (Version, error) {
 	var d struct {
-		Data version `json:"data"`
+		Data Version `json:"data"`
 	}
 
 	if err := p.callAPI("/nodes/"+node+"/version", http.MethodGet, &d); err != nil {
@@ -32,4 +34,17 @@ func (p *ProxmoxConnection) getVersion(node string) (version, error) {
 	}
 
 	return d.Data, nil
+}
+
+// StartAll starts all containers and virtual machines on a given host
+func (p *ProxmoxConnection) StartAll(node string) error {
+	var d struct {
+		Data string `json:"data"`
+	}
+
+	if err := p.callAPI("/nodes/"+node+"/startall?force=1", http.MethodPost, &d); err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -5,10 +5,11 @@ import (
 	"strconv"
 )
 
-func (p *ProxmoxConnection) getNodes() ([]node, error) {
+// GetNodes returns an array of nodes (hosts) for a given proxmox connection
+func (p *ProxmoxConnection) GetNodes() ([]Node, error) {
 	// data struct for API call
 	var d struct {
-		Data []node `json:"data"`
+		Data []Node `json:"data"`
 	}
 
 	// call API
@@ -17,7 +18,7 @@ func (p *ProxmoxConnection) getNodes() ([]node, error) {
 	}
 
 	// transform into proper array
-	var nodes []node
+	var nodes []Node
 	nodes = append(nodes, d.Data...)
 
 	return nodes, nil

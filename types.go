@@ -1,6 +1,7 @@
 package main
 
-type node struct {
+// Node hols info for a proxmox node
+type Node struct {
 	ID             string `json:"id"`
 	Level          string `json:"level"`
 	Node           string `json:"node"`
@@ -9,13 +10,15 @@ type node struct {
 	Type           string `json:"type"`
 }
 
-type version struct {
+// Version holds info for a proxmox node's version
+type Version struct {
 	Release string `json:"release"`
 	RepoID  string `json:"repoid"`
 	Version string `json:"version"`
 }
 
-type vm struct {
+// VM holds info for a virtual machine or container
+type VM struct {
 	CPULoad   float64 `json:"cpu"`
 	CPUs      int     `json:"cpus"`
 	Disk      int     `json:"disk"`
