@@ -9,6 +9,12 @@ type node struct {
 	Type           string `json:"type"`
 }
 
+type version struct {
+	Release string `json:"release"`
+	RepoID  string `json:"repoid"`
+	Version string `json:"version"`
+}
+
 type vm struct {
 	CPULoad   float64 `json:"cpu"`
 	CPUs      int     `json:"cpus"`

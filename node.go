@@ -1,6 +1,8 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func (p *ProxmoxConnection) getVMs(node string) ([]vm, error) {
 	// data struct for API call
@@ -18,4 +20,16 @@ func (p *ProxmoxConnection) getVMs(node string) ([]vm, error) {
 	vms = append(vms, d.Data...)
 
 	return vms, nil
+}
+
+func (p *ProxmoxConnection) getVersion(node string) (version, error) {
+	var d struct {
+		Data version `json:"data"`
+	}
+
+	if err := p.callAPI("/nodes/"+node+"/version", http.MethodGet, &d); err != nil {
+		return d.Data, err
+	}
+
+	return d.Data, nil
 }
